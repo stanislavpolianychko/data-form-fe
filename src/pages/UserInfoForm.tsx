@@ -1,50 +1,72 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ApiClient } from '../api/apiClient';
 import RequestStatus from '../api/requestStatusEnum';
+import LanguageSystem from '../translations/languageSystem';
+import { BaseResponse, UpdateUserInfoRequest } from '../interfaces';
+import { RequestResultState } from '../components/RequestResultState';
 
-export interface UserInfoFormData {
-  name: string;
-  age: number;
-  married: boolean;
-  dateOfBirth: string;
-}
+// Initial form data
+const initialFormData: UpdateUserInfoRequest = {
+  name: '',
+  age: 0,
+  married: false,
+  dateOfBirth: '',
+};
 
-export function UserForm() {
-  const [formData, setFormData] = useState<UserInfoFormData>({
-    name: '',
-    age: 0,
-    married: false,
-    dateOfBirth: '',
-  });
+/**
+ * Component for rendering the user information form.
+ *
+ * This component allows users to input their information and submit it.
+ *
+ * @returns {JSX.Element} The UserForm component.
+ */
+function UserForm(): JSX.Element {
+  const [formData, setFormData] = useState<UpdateUserInfoRequest>(initialFormData);
   const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
+  const [data, setData] = useState<BaseResponse>();
 
   useEffect(() => {
+    // Send data to API when status changes to SEND_DATA
     if (status === RequestStatus.SEND_DATA) {
       setStatus(RequestStatus.SENDING_DATA);
       ApiClient.collectInfo(formData)
-        .then(() => {
-          setStatus(RequestStatus.DATA_SENDED);
+        .then((response: BaseResponse | null) => {
+          if (response) {
+            setStatus(RequestStatus.DATA_SENDED);
+            setData(response);
+          } else {
+            throw new Error();
+          }
         })
-        .catch((e) => {
+        .catch(() => {
           setStatus(RequestStatus.ERROR_SENDING_DATA);
         });
     }
-  }, [status, formData]);
+  }, [status]);
 
+  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.name === 'married' ? e.target.checked : e.target.value,
-    });
+    const { name, value, type, checked } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus(RequestStatus.SEND_DATA);
   };
 
   return (
     <div>
-      <h1>Fill the form</h1>
-      <form>
+      {/* Form header */}
+      <h1>{LanguageSystem.getTranslation('fillTheFormHeader')}</h1>
+      <form onSubmit={handleSubmit}>
+        {/* Name input */}
         <label>
-          Name:
+          {LanguageSystem.getTranslation('userNameFormHeader')}
           <input
             type="text"
             name="name"
@@ -52,8 +74,9 @@ export function UserForm() {
             onChange={handleChange}
           />
         </label>
+        {/* Age input */}
         <label>
-          Age:
+          {LanguageSystem.getTranslation('ageFormHeader')}
           <input
             type="number"
             name="age"
@@ -61,8 +84,9 @@ export function UserForm() {
             onChange={handleChange}
           />
         </label>
+        {/* Married checkbox */}
         <label>
-          Married:
+          {LanguageSystem.getTranslation('marriedFormHeader')}
           <input
             type="checkbox"
             name="married"
@@ -70,8 +94,9 @@ export function UserForm() {
             onChange={handleChange}
           />
         </label>
+        {/* Date of birth input */}
         <label>
-          Date of Birth:
+          {LanguageSystem.getTranslation('dateOfBirthFormHeader')}
           <input
             type="date"
             name="dateOfBirth"
@@ -79,10 +104,18 @@ export function UserForm() {
             onChange={handleChange}
           />
         </label>
-        <button type="button" onClick={() => setStatus(RequestStatus.SEND_DATA)}>
-          Submit
+        {/* Submit button */}
+        <button type="submit">
+          {LanguageSystem.getTranslation('submitButton')}
         </button>
       </form>
+
+      {/* Display request result state */}
+      <RequestResultState status={status} data={data} onRetry={() => setStatus(RequestStatus.INITIAL)} />
+
     </div>
   );
 }
+
+
+export default UserForm;

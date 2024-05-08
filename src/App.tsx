@@ -1,50 +1,28 @@
-import { Routes, Route, Outlet, Link } from 'react-router-dom';
-import { CheckName } from './pages/CheckName';
-import { Home } from './pages/Home';
-import { UserForm } from './pages/UserInfoForm';
+import NotFound from './pages/NotFound';
+import Paths from './routes';
+import React from 'react';
+import Layout from './pages/Layout';
+import { Routes, Route } from 'react-router-dom';
+import CheckName from './pages/CheckName';
+import UserForm from './pages/UserInfoForm';
+import Home from './pages/Home';
+import './styles/App.css';
 
-export default function App() {
+/**
+ * The main App component that defines the routes for the application.
+ * @returns {JSX.Element} A Routes component with defined Route components.
+ */
+function App(): JSX.Element {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path={Paths.HOME} element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="check-name" element={<CheckName />} />
-        <Route path="user-info-form" element={<UserForm />} />
-        <Route path="*" element={<NoMatch />} />
+        <Route path={Paths.CHECK_NAME} element={<CheckName />} />
+        <Route path={Paths.USER_INFO_FORM} element={<UserForm />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
 }
 
-function Layout() {
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/check-name">Check Name</Link>
-          </li>
-          <li>
-            <Link to={'/user-info-form'}>User Info Form</Link>
-          </li>
-        </ul>
-      </nav>
-      <hr />
-      <Outlet />
-    </div>
-  );
-}
-
-function NoMatch() {
-  return (
-    <div>
-      <h2>Nothing to see here!</h2>
-      <p>
-        <Link to="/">Go to the home page</Link>
-      </p>
-    </div>
-  );
-}
+export default App;

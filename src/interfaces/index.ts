@@ -1,3 +1,6 @@
+/**
+ * Interface defining the structure of a validation error.
+ */
 interface ValidationError {
   target?: object;
   property: string;
@@ -9,24 +12,49 @@ interface ValidationError {
   contexts?: {};
 }
 
-export interface UpdateInfoRequest {
+/**
+ * Interface defining the structure of an update name request.
+ */
+export interface UpdateNameRequest {
   name: string;
 }
 
-interface BaseResponseInteface {
+/**
+ * Interface defining the structure of an update user information request.
+ */
+export interface UpdateUserInfoRequest {
+  name: string;
+  age: number;
+  married: boolean;
+  dateOfBirth: string;
+}
+
+/**
+ * Interface defining the base structure of a response.
+ */
+interface BaseResponseInterface {
   success: boolean;
   data?: any;
   errors?: ValidationError[];
 }
 
-interface BaseResponseSuccess extends BaseResponseInteface {
+/**
+ * Interface defining the base structure of a successful response.
+ */
+interface BaseResponseSuccess extends BaseResponseInterface {
   success: true;
   data: any;
 }
 
-interface BaseResponseError extends BaseResponseInteface {
+/**
+ * Interface defining the base structure of an error response.
+ */
+interface BaseResponseError extends BaseResponseInterface {
   success: false;
   errors: ValidationError[];
 }
 
+/**
+ * Union type representing both successful and error responses.
+ */
 export type BaseResponse = BaseResponseSuccess | BaseResponseError;
