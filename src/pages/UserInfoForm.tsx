@@ -43,7 +43,7 @@ function UserForm(): JSX.Element {
           setStatus(RequestStatus.ERROR_SENDING_DATA);
         });
     }
-  }, [status]);
+  }, [status, formData]);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
