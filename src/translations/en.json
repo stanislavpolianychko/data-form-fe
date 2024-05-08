@@ -1,0 +1,20 @@
+{
+  "userNameFormHeader": "User Name:",
+  "ageFormHeader": "Age:",
+  "marriedFormHeader": "Married:",
+  "dateOfBirthFormHeader": "Date of Birth:",
+  "submitButton": "Submit",
+  "fillTheFormHeader": "Fill the form",
+  "404Error": "404 Page Not Found",
+  "404ErrorMessage": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
+  "homeHeader": "Home Page",
+  "checkNameTabName": "Check Name",
+  "userInfoFormTabName": "User Info Form",
+  "validateBtn": "Validate",
+  "insertName": "Insert Name",
+  "requestStatusErrorSendingData": "Error sending data",
+  "requestStatusValidationSuccess": "Data is valid",
+  "requestStatusValidationFailed": "Data is invalid",
+  "buttonSendAnotherRequest": "Send another value",
+  "requestStatusSendingInProgress": "Sending in progress"
+}

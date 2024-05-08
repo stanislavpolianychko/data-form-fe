@@ -1,73 +1,59 @@
-import { useEffect, useState } from 'react';
-import { BaseResponse } from '../interfaces';
+import React, { useEffect, useState } from 'react';
+import { BaseResponse, UpdateNameRequest } from '../interfaces';
+import { ApiClient } from '../api/apiClient';
+import RequestStatus from '../api/requestStatusEnum';
+import LanguageSystem from '../translations/languageSystem';
+import { RequestResultState } from '../components/RequestResultState';
 
-export function CheckName() {
-  const [status, setStatus] = useState<'INITIAL' | 'SEND_DATA' | 'SENDING_DATA' | 'DATA_SENDED' | 'ERROR_SENDING_DATA'>();
+/**
+ * Component for checking a name.
+ *
+ * This component allows users to input a name, validate it, and view the result.
+ *
+ * @returns {JSX.Element} The CheckName component.
+ */
+function CheckName(): JSX.Element {
+  const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
   const [value, setValue] = useState<string>('');
-  const [data , setData] = useState<BaseResponse>();
+  const [data, setData] = useState<BaseResponse>();
 
   useEffect(() => {
-    if(status === 'SEND_DATA') {
-      setStatus('SENDING_DATA');
-      fetch('http://localhost:3001/info/validate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: value,
+    // Send data to API for validation when status changes to SEND_DATA
+    if (status === RequestStatus.SEND_DATA) {
+      setStatus(RequestStatus.SENDING_DATA);
+      const requestBody: UpdateNameRequest = { name: value };
+      ApiClient.validateName(requestBody)
+        .then((response: BaseResponse | null) => {
+          if (response) {
+            setStatus(RequestStatus.DATA_SENDED);
+            setData(response);
+          } else {
+            throw new Error();
+          }
         })
-      })
-      .then((rawResponse) => {
-        if([200, 201].includes(rawResponse.status)) {
-          return rawResponse.json();
-        } else {
-          throw new Error();
-        }        
-      })
-      .then((response: BaseResponse) => {
-        setStatus('DATA_SENDED');
-        setData(response);
-      })
-      .catch(e => {
-        setStatus('ERROR_SENDING_DATA');
-      })
+        .catch(() => {
+          setStatus(RequestStatus.ERROR_SENDING_DATA);
+        });
     }
   }, [status, value]);
 
-  if (status === 'ERROR_SENDING_DATA') {
-    return (
-      <div>
-        <h1>ERRORE INVIO DATI</h1>
-        <button onClick={() => setStatus('INITIAL')}>RIPROVA</button>
-      </div>
-    );
-  }
-
-  if(status === 'SEND_DATA' || status === 'SENDING_DATA') {
-    return (
-      <div>
-        <h1>INVIO IN CORSO</h1>
-        <button onClick={() => setStatus('INITIAL')}>ANNULLA</button>
-      </div>
-    );
-  }
-
-  if(status === 'DATA_SENDED') {
-    return (<div>
-      {data?.success === true && <h1>DATA SENT VALID</h1>}
-      {data?.success === false && <h1>DATA SENT INVALID</h1>}
-      <button onClick={() => setStatus('INITIAL')}>SEND ANOTHER VALUE</button>
-    </div>)
-  }
-
   return (
+    <>
+      {/* Render input field and button for sending data */}
       <div>
-        <h1>INSERT NAME</h1>
-        <input type="text" value={value} onChange={(e) => {
-          setValue(e.target.value);
-        }}></input>
-        <button onClick={() => setStatus('SEND_DATA')}>VALIDATE</button>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button onClick={() => setStatus(RequestStatus.SEND_DATA)}>
+          {LanguageSystem.getTranslation("validateBtn")}
+        </button>
       </div>
+      {/* Display request result state */}
+      <RequestResultState status={status} data={data} onRetry={() => setStatus(RequestStatus.INITIAL)} />
+    </>
   );
 }
+
+export default CheckName;
