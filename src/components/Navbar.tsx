@@ -13,15 +13,21 @@ function Navbar(): JSX.Element {
       <ul>
         {/* Navigation link for the home page */}
         <li>
-          <Link to={Paths.HOME}>{LanguageSystem.getTranslation('homeHeader')}</Link>
+          <Link to={Paths.HOME}>
+            {LanguageSystem.getTranslation('homeHeader')}
+          </Link>
         </li>
         {/* Navigation link for checking name */}
         <li>
-          <Link to={Paths.CHECK_NAME}>{LanguageSystem.getTranslation('checkNameTabName')}</Link>
+          <Link to={Paths.CHECK_NAME}>
+            {LanguageSystem.getTranslation('checkNameTabName')}
+          </Link>
         </li>
         {/* Navigation link for user information form */}
         <li>
-          <Link to={Paths.USER_INFO_FORM}>{LanguageSystem.getTranslation('userInfoFormTabName')}</Link>
+          <Link to={Paths.USER_INFO_FORM}>
+            {LanguageSystem.getTranslation('userInfoFormTabName')}
+          </Link>
         </li>
       </ul>
     </nav>

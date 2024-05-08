@@ -20,12 +20,12 @@ form {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"] {
+input[type='text'],
+input[type='number'],
+input[type='date'] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -33,7 +33,7 @@ input[type="date"] {
   border: 1px solid #ccc;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   margin-right: 5px;
 }
 
@@ -82,7 +82,7 @@ nav ul li a:hover {
   margin-top: 20px;
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .request-result-state h1 {

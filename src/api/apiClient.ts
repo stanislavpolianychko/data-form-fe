@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { BaseResponse, UpdateNameRequest, UpdateUserInfoRequest } from '../interfaces';
+import {
+  BaseResponse,
+  UpdateNameRequest,
+  UpdateUserInfoRequest,
+} from '../interfaces';
 
 const API_URL = 'http://localhost:3001/';
 
@@ -38,11 +42,21 @@ export abstract class ApiClient {
     }
   }
 
-  public static async validateName(name: UpdateNameRequest): Promise<BaseResponse | null> {
-    return await this.post<BaseResponse, UpdateNameRequest>('info/validate', name);
+  public static async validateName(
+    name: UpdateNameRequest,
+  ): Promise<BaseResponse | null> {
+    return await this.post<BaseResponse, UpdateNameRequest>(
+      'info/validate',
+      name,
+    );
   }
 
-  public static async collectInfo(formData: UpdateUserInfoRequest): Promise<BaseResponse | null> {
-    return await this.post<BaseResponse, UpdateUserInfoRequest>('info/collect', formData);
+  public static async collectInfo(
+    formData: UpdateUserInfoRequest,
+  ): Promise<BaseResponse | null> {
+    return await this.post<BaseResponse, UpdateUserInfoRequest>(
+      'info/collect',
+      formData,
+    );
   }
 }

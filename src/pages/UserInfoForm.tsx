@@ -21,7 +21,8 @@ const initialFormData: UpdateUserInfoRequest = {
  * @returns {JSX.Element} The UserForm component.
  */
 function UserForm(): JSX.Element {
-  const [formData, setFormData] = useState<UpdateUserInfoRequest>(initialFormData);
+  const [formData, setFormData] =
+    useState<UpdateUserInfoRequest>(initialFormData);
   const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
   const [data, setData] = useState<BaseResponse>();
 
@@ -47,7 +48,7 @@ function UserForm(): JSX.Element {
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: type === 'checkbox' ? checked : value,
     }));
@@ -111,11 +112,13 @@ function UserForm(): JSX.Element {
       </form>
 
       {/* Display request result state */}
-      <RequestResultState status={status} data={data} onRetry={() => setStatus(RequestStatus.INITIAL)} />
-
+      <RequestResultState
+        status={status}
+        data={data}
+        onRetry={() => setStatus(RequestStatus.INITIAL)}
+      />
     </div>
   );
 }
-
 
 export default UserForm;

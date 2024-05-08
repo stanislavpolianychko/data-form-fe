@@ -17,6 +17,6 @@ export function NotFound(): JSX.Element {
       <p>{LanguageSystem.getTranslation('404ErrorMessage')}</p>
     </div>
   );
-};
+}
 
 export default NotFound;

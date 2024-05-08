@@ -20,29 +20,48 @@ interface RequestResultStateProps {
  * @param {RequestResultStateProps} props - The props for the component.
  * @returns {JSX.Element} The RequestResultState component.
  */
-export const RequestResultState: React.FC<RequestResultStateProps> = ({ status, data, onRetry }: RequestResultStateProps): JSX.Element => {
+export const RequestResultState: React.FC<RequestResultStateProps> = ({
+  status,
+  data,
+  onRetry,
+}: RequestResultStateProps): JSX.Element => {
   return (
     <>
       {/* Display error message and retry button */}
       {status === RequestStatus.ERROR_SENDING_DATA && (
         <div className="request-result-state">
-          <h1>{LanguageSystem.getTranslation("requestStatusErrorSendingData")}</h1>
-          <button onClick={onRetry}>{LanguageSystem.getTranslation("buttonSendAnotherRequest")}</button>
+          <h1>
+            {LanguageSystem.getTranslation('requestStatusErrorSendingData')}
+          </h1>
+          <button onClick={onRetry}>
+            {LanguageSystem.getTranslation('buttonSendAnotherRequest')}
+          </button>
         </div>
       )}
 
       {/* Display sending in progress message */}
-      {(status === RequestStatus.SEND_DATA || status === RequestStatus.SENDING_DATA) && (
+      {(status === RequestStatus.SEND_DATA ||
+        status === RequestStatus.SENDING_DATA) && (
         <div className="request-result-state">
-          <h1>{LanguageSystem.getTranslation("requestStatusSendingInProgress")}</h1>
+          <h1>
+            {LanguageSystem.getTranslation('requestStatusSendingInProgress')}
+          </h1>
         </div>
       )}
 
       {/* Display validation success or failure message */}
       {status === RequestStatus.DATA_SENDED && (
         <div className="request-result-state">
-          {data?.success === true && <h1>{LanguageSystem.getTranslation("requestStatusValidationSuccess")}</h1>}
-          {data?.success === false && <h1>{LanguageSystem.getTranslation("requestStatusValidationFailed")}</h1>}
+          {data?.success === true && (
+            <h1>
+              {LanguageSystem.getTranslation('requestStatusValidationSuccess')}
+            </h1>
+          )}
+          {data?.success === false && (
+            <h1>
+              {LanguageSystem.getTranslation('requestStatusValidationFailed')}
+            </h1>
+          )}
         </div>
       )}
     </>

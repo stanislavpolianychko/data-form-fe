@@ -47,11 +47,15 @@ function CheckName(): JSX.Element {
           onChange={(e) => setValue(e.target.value)}
         />
         <button onClick={() => setStatus(RequestStatus.SEND_DATA)}>
-          {LanguageSystem.getTranslation("validateBtn")}
+          {LanguageSystem.getTranslation('validateBtn')}
         </button>
       </div>
       {/* Display request result state */}
-      <RequestResultState status={status} data={data} onRetry={() => setStatus(RequestStatus.INITIAL)} />
+      <RequestResultState
+        status={status}
+        data={data}
+        onRetry={() => setStatus(RequestStatus.INITIAL)}
+      />
     </>
   );
 }
