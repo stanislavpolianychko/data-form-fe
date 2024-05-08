@@ -55,19 +55,19 @@ export function CheckName() {
 
   if(status === 'DATA_SENDED') {
     return (<div>
-        {data?.success === true && <h1>DATI INVIATI VALIDI</h1>}
-        {data?.success === false && <h1>DATI INVIATI NON VALIDI</h1>}
-        <button onClick={() => setStatus('INITIAL')}>INVIA UN ALTRO VALORE</button>
+      {data?.success === true && <h1>DATA SENT VALID</h1>}
+      {data?.success === false && <h1>DATA SENT INVALID</h1>}
+      <button onClick={() => setStatus('INITIAL')}>SEND ANOTHER VALUE</button>
     </div>)
   }
 
   return (
-    <div>
-      <h1>INSERISCI IL NOME</h1>
-      <input type="text" value={value} onChange={(e) => {
-        setValue(e.target.value);
-      }}></input>
-      <button onClick={() => setStatus('SEND_DATA')}>VALIDA</button>
-    </div>
+      <div>
+        <h1>INSERT NAME</h1>
+        <input type="text" value={value} onChange={(e) => {
+          setValue(e.target.value);
+        }}></input>
+        <button onClick={() => setStatus('SEND_DATA')}>VALIDATE</button>
+      </div>
   );
 }

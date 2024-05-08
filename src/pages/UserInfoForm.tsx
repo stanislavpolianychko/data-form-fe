@@ -19,7 +19,7 @@ export function UserForm() {
     useEffect(() => {
         if (status === 'SEND_DATA') {
             setStatus('SENDING_DATA');
-            fetch('http://localhost:3001/info/validate-user-info', {
+            fetch('http://localhost:3001/info/collect', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
