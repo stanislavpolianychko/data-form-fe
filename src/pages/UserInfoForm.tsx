@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { ApiClient } from '../api/apiClient';
+import RequestStatus from '../api/requestStatusEnum';
 
-interface FormData {
+export interface UserInfoFormData {
   name: string;
   age: number;
   married: boolean;
@@ -8,42 +10,23 @@ interface FormData {
 }
 
 export function UserForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<UserInfoFormData>({
     name: '',
     age: 0,
     married: false,
     dateOfBirth: '',
   });
-  const [status, setStatus] = useState<
-    | 'INITIAL'
-    | 'SEND_DATA'
-    | 'SENDING_DATA'
-    | 'DATA_SENDED'
-    | 'ERROR_SENDING_DATA'
-  >('INITIAL');
+  const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
 
   useEffect(() => {
-    if (status === 'SEND_DATA') {
-      setStatus('SENDING_DATA');
-      fetch('http://localhost:3001/info/collect', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-        .then((rawResponse) => {
-          if ([200, 201].includes(rawResponse.status)) {
-            return rawResponse.json();
-          } else {
-            throw new Error();
-          }
-        })
-        .then((response) => {
-          setStatus('DATA_SENDED');
+    if (status === RequestStatus.SEND_DATA) {
+      setStatus(RequestStatus.SENDING_DATA);
+      ApiClient.collectInfo(formData)
+        .then(() => {
+          setStatus(RequestStatus.DATA_SENDED);
         })
         .catch((e) => {
-          setStatus('ERROR_SENDING_DATA');
+          setStatus(RequestStatus.ERROR_SENDING_DATA);
         });
     }
   }, [status, formData]);
@@ -96,7 +79,7 @@ export function UserForm() {
             onChange={handleChange}
           />
         </label>
-        <button type="button" onClick={() => setStatus('SEND_DATA')}>
+        <button type="button" onClick={() => setStatus(RequestStatus.SEND_DATA)}>
           Submit
         </button>
       </form>
