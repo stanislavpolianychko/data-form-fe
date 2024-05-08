@@ -1,16 +1,16 @@
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route, Outlet, Link } from 'react-router-dom';
 import { CheckName } from './pages/CheckName';
 import { Home } from './pages/Home';
 
 export default function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="check-name" element={<CheckName />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="check-name" element={<CheckName />} />
+        <Route path="*" element={<NoMatch />} />
+      </Route>
+    </Routes>
   );
 }
 
@@ -32,9 +32,6 @@ function Layout() {
     </div>
   );
 }
-
-
-
 
 function NoMatch() {
   return (

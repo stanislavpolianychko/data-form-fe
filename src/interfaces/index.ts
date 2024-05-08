@@ -3,11 +3,10 @@ interface ValidationError {
   property: string;
   value?: any;
   constraints?: {
-      [type: string]: string;
+    [type: string]: string;
   };
   children?: ValidationError[];
-  contexts?: {
-  };
+  contexts?: {};
 }
 
 export interface UpdateInfoRequest {
