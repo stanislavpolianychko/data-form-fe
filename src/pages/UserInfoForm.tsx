@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { UpdateUserInfoRequest } from '../interfaces';
+import { RequestResultState } from '../components/RequestResultState';
 import { ApiClient } from '../api/apiClient';
 import RequestStatus from '../api/requestStatusEnum';
 import LanguageSystem from '../translations/languageSystem';
-import { BaseResponse, UpdateUserInfoRequest } from '../interfaces';
-import { RequestResultState } from '../components/RequestResultState';
+import useRequestState from '../hooks/useRequestState';
 
 // Initial form data
 const initialFormData: UpdateUserInfoRequest = {
@@ -23,27 +24,12 @@ const initialFormData: UpdateUserInfoRequest = {
 function UserForm(): JSX.Element {
   const [formData, setFormData] =
     useState<UpdateUserInfoRequest>(initialFormData);
-  const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
-  const [data, setData] = useState<BaseResponse>();
-
-  useEffect(() => {
-    // Send data to API when status changes to SEND_DATA
-    if (status === RequestStatus.SEND_DATA) {
-      setStatus(RequestStatus.SENDING_DATA);
-      ApiClient.collectInfo(formData)
-        .then((response: BaseResponse | null) => {
-          if (response) {
-            setStatus(RequestStatus.DATA_SENDED);
-            setData(response);
-          } else {
-            throw new Error();
-          }
-        })
-        .catch(() => {
-          setStatus(RequestStatus.ERROR_SENDING_DATA);
-        });
-    }
-  }, [status, formData]);
+  const { status, data, setStatus } = useRequestState(
+    RequestStatus.INITIAL,
+    () => {
+      return ApiClient.collectInfo(formData);
+    },
+  );
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

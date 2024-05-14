@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { BaseResponse, UpdateNameRequest } from '../interfaces';
+import React, { useState } from 'react';
+import { RequestResultState } from '../components/RequestResultState';
+import { UpdateNameRequest } from '../interfaces';
 import { ApiClient } from '../api/apiClient';
 import RequestStatus from '../api/requestStatusEnum';
 import LanguageSystem from '../translations/languageSystem';
-import { RequestResultState } from '../components/RequestResultState';
+import useRequestState from '../hooks/useRequestState';
 
 /**
  * Component for checking a name.
@@ -13,29 +14,14 @@ import { RequestResultState } from '../components/RequestResultState';
  * @returns {JSX.Element} The CheckName component.
  */
 function CheckName(): JSX.Element {
-  const [status, setStatus] = useState<RequestStatus>(RequestStatus.INITIAL);
   const [value, setValue] = useState<string>('');
-  const [data, setData] = useState<BaseResponse>();
-
-  useEffect(() => {
-    // Send data to API for validation when status changes to SEND_DATA
-    if (status === RequestStatus.SEND_DATA) {
-      setStatus(RequestStatus.SENDING_DATA);
+  const { status, data, setStatus } = useRequestState(
+    RequestStatus.INITIAL,
+    () => {
       const requestBody: UpdateNameRequest = { name: value };
-      ApiClient.validateName(requestBody)
-        .then((response: BaseResponse | null) => {
-          if (response) {
-            setStatus(RequestStatus.DATA_SENDED);
-            setData(response);
-          } else {
-            throw new Error();
-          }
-        })
-        .catch(() => {
-          setStatus(RequestStatus.ERROR_SENDING_DATA);
-        });
-    }
-  }, [status, value]);
+      return ApiClient.validateName(requestBody);
+    },
+  );
 
   return (
     <>
