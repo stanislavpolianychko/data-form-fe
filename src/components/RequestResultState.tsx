@@ -23,19 +23,15 @@ interface RequestResultStateProps {
 export const RequestResultState: React.FC<RequestResultStateProps> = ({
   status,
   data,
-  onRetry,
 }: RequestResultStateProps): JSX.Element => {
   return (
     <>
-      {/* Display error message and retry button */}
+      {/* Display error message */}
       {status === RequestStatus.ERROR_SENDING_DATA && (
         <div className="request-result-state">
           <h1>
             {LanguageSystem.getTranslation('requestStatusErrorSendingData')}
           </h1>
-          <button onClick={onRetry}>
-            {LanguageSystem.getTranslation('buttonSendAnotherRequest')}
-          </button>
         </div>
       )}
 

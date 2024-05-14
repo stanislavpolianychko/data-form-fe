@@ -22,7 +22,8 @@ const initialFormData: UpdateUserInfoRequest = {
  * @returns {JSX.Element} The UserForm component.
  */
 function UserForm(): JSX.Element {
-  const [formData, setFormData] = useState<UpdateUserInfoRequest>(initialFormData);
+  const [formData, setFormData] =
+    useState<UpdateUserInfoRequest>(initialFormData);
   const { status, data, setStatus } = useRequestState(
     RequestStatus.INITIAL,
     () => {
