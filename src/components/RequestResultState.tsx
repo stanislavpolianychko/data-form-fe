@@ -60,6 +60,14 @@ export const RequestResultState: React.FC<RequestResultStateProps> = ({
           )}
         </div>
       )}
+
+      {data?.errors?.map((error, index: number) => (
+        <div key={index}>
+          {Object.values(error.constraints || {}).map((message, i) => (
+            <p key={i}>{message}</p>
+          ))}
+        </div>
+      ))}
     </>
   );
 };
